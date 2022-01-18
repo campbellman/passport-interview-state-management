@@ -1,0 +1,34 @@
+# Passport Interview - Colin Campbell
+
+## State Management in React
+- *Why This Repo?*
+  - Alex asked me how I manage state in my React apps and I wasn't sure how to answer
+  - This repo is how I manage state without any major dependencies
+- *App Description*
+  - A naive tick tack toe game with the following useless features
+    - The board's color changes from red to green depending on whether the price of bitcoin has recently increased or decreased
+    - You can try to taunt the other player, but you'll be placed in timeout, meaning you must wait 10 seconds to make your move
+- *Installation*
+  - Clone the repo, 'yarn install', and run on localhost:3000 with 'yarn start'
+- *Implementation Notes* 
+  - Not meant to demonstrate my UI skills, only how I manage state
+  - Heavily stripped down create-react-app
+  - Using a dependency resolution for the mini-css-extract-plugin due to the following [package issue](https://github.com/facebook/create-react-app/issues/11930)
+- *How Is State Managed?*
+  - The hook defined in src/runtime/index.js combines a set of runtime hooks (src/runtime/*.js) into a single output. Some utility functions inside of src/lib.js are used to track and update changes to this output. Any component can subscribe to its changes via useRuntime().
+- *Files relating to state management*
+  - *src/lib.js*
+    - Defines some functions that make it possible to track and share state across react components.
+  - *src/index.js*
+    - Sets up our demo app
+  - *src/runtime/index.js*
+    - Combines runtime hook outputs into a single hook for consumption in src/index.js
+- *Benefits of This Pattern*
+  - Encourages housing all application behavior within a set of centrally accessible hooks
+  - Avoids large dependencies
+  - Adding and removing features is straightforward since all runtime hooks are loosely coupled and can communicate bi-directionally via simple pub/sub mechanism (though use with caution)
+  - Fixes prop drilling
+  - Easy to setup use with TypeScript
+- *When Would I Use This?*
+  - I would NOT use this with a large team and would never push it on any teammates in a larger company. This is a pattern that works when all developers are aware of it's quirks. Would struggle to scale without some extra linting help or typescript.
+  - As a solo developer I would 100% use this to build a small product or tool
